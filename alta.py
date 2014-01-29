@@ -1,9 +1,7 @@
-import commands
-import sys
 import os
 import MySQLdb
 #pedimos el nombre
-nombre = raw_input("introduce el nombre: ")
+nombre = str(raw_input("introduce el nombre: "))
 dominio = raw_input("introduce el nombre de dominio: ")
 #abrimos una conexion
 base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="usuarios")
@@ -24,5 +22,9 @@ else:
 		print "nombre de dominio existente"
 		sys.exit
 	else:
-#siguiente paso
-		print "hola"
+#creamos el directorio personal y le anyadimos el index.html
+		os.system("mkdir /home/sergio/pruebahosting/%s" %nombre)
+		os.system("cp /home/sergio/plantillas_hosting/index.html /home/sergio/pruebahosting/%s"%nombre)
+#crearemos el nuevo virtualhost
+		os.system("cp /home/sergio/plantillas_hosting/virtual_host /home/sergio/plantillas_hosting/%s"%nombre)
+						
