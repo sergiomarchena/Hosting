@@ -38,5 +38,5 @@ else:
 #esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
 		os.system("mv /home/sergio/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/%s"%nombre)
 #activamos el modulo y reiniciamos apache
-		os.system("a2enmod %s"%nombre)
+		os.system("a2ensite %s"%nombre)
 		os.system("service apache2 restart")
