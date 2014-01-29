@@ -26,5 +26,17 @@ else:
 		os.system("mkdir /home/sergio/pruebahosting/%s" %nombre)
 		os.system("cp /home/sergio/plantillas_hosting/index.html /home/sergio/pruebahosting/%s"%nombre)
 #crearemos el nuevo virtualhost
-		os.system("cp /home/sergio/plantillas_hosting/virtual_host /home/sergio/plantillas_hosting/%s"%nombre)
-						
+		virtual_host="/home/sergio/plantillas_hosting/virtual_host"
+		virtual=open(virtual_host, "r")
+		filew = open(virtual_host+'.mod', "w")
+		buff = virtual.read()
+		char1='%nombre%'
+		rbuff = buff.replace(char1, nombre)
+		filew.write(rbuff)
+		virtual.close()
+		filew.close()
+#esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
+		os.system("mv /home/sergio/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/%s"%nombre)
+#activamos el modulo y reiniciamos apache
+		os.system("a2enmod %s"%nombre)
+		os.system("service apache2 restart")
