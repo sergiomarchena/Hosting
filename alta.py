@@ -7,7 +7,7 @@ dominio = raw_input("introduce el nombre de dominio: ")
 base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="usuarios")
 cursor=base.cursor()
 #vemos si el usuario existe buscamos en mysql el nombre de usuario
-consultausuario="select nombre from usuarios where nombre='%s';" %nombre
+consultausuario="select username from usuarios where username='%s';" %nombre
 cursor.execute(consultausuario)
 consulta_usuario = cursor.fetchone()
 if consulta_usuario !=None:
@@ -15,7 +15,7 @@ if consulta_usuario !=None:
 	sys.exit
 else:
 #vemos si existe el dominio que tambien lo guardaremos en mysql
-	consultadominio="select dominio from usuarios where dominio='%s';" %dominio
+	consultadominio="select ndominio from usuarios where ndominio='%s';" %dominio
 	cursor.execute(consultadominio)
 	consulta_dominio = cursor.fetchone()
 	if consulta_dominio !=None:
@@ -23,10 +23,10 @@ else:
 		sys.exit
 	else:
 #creamos el directorio personal y le anyadimos el index.html
-		os.system("mkdir /home/sergio/pruebahosting/%s" %nombre)
-		os.system("cp /home/sergio/plantillas_hosting/index.html /home/sergio/pruebahosting/%s"%nombre)
+		os.system("mkdir /srv/www/%s" %nombre)
+		os.system("cp /home/debian/plantillas_hosting/index.html /home/sergio/pruebahosting/%s"%nombre)
 #crearemos el nuevo virtualhost
-		virtual_host="/home/sergio/plantillas_hosting/virtual_host"
+		virtual_host="/home/debian/plantillas_hosting/virtual_host"
 		virtual=open(virtual_host, "r")
 		filew = open(virtual_host+'.mod', "w")
 		buff = virtual.read()
@@ -36,7 +36,7 @@ else:
 		virtual.close()
 		filew.close()
 #esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
-		os.system("mv /home/sergio/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/%s"%nombre)
+		os.system("mv /home/debian/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/www.%s"%nombre.com)
 #activamos el modulo y reiniciamos apache
 		os.system("a2ensite %s"%nombre)
 		os.system("service apache2 restart")
