@@ -1,10 +1,12 @@
 import os
 import MySQLdb
+import string
+from random import choice
 #pedimos el nombre
 nombre = str(raw_input("introduce el nombre: "))
 dominio = raw_input("introduce el nombre de dominio: ")
 #abrimos una conexion
-base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="usuarios")
+base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="ftpd")
 cursor=base.cursor()
 #vemos si el usuario existe buscamos en mysql el nombre de usuario
 consultausuario="select username from usuarios where username='%s';" %nombre
@@ -24,9 +26,9 @@ else:
 	else:
 #creamos el directorio personal y le anyadimos el index.html
 		os.system("mkdir /srv/www/%s" %nombre)
-		os.system("cp /home/debian/plantillas_hosting/index.html /home/sergio/pruebahosting/%s"%nombre)
+		os.system("cp /home/sergio/plantillas_hosting/index.html /srv/www/%s"%nombre)
 #crearemos el nuevo virtualhost
-		virtual_host="/home/debian/plantillas_hosting/virtual_host"
+		virtual_host="/home/sergio/plantillas_hosting/virtual_host"
 		virtual=open(virtual_host, "r")
 		filew = open(virtual_host+'.mod', "w")
 		buff = virtual.read()
@@ -36,7 +38,35 @@ else:
 		virtual.close()
 		filew.close()
 #esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
-		os.system("mv /home/debian/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/www.%s"%nombre.com)
+		os.system("mv /home/sergio/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/www.%s"%dominio)
 #activamos el modulo y reiniciamos apache
-		os.system("a2ensite %s"%nombre)
-		os.system("service apache2 restart")
+		activar=os.system("a2ensite www.%s"%dominio)
+		reiniciar=os.system("service apache2 restart")
+#creamos un nuevo usuario para ftp
+#generamos una contrasenya aleatoria
+		def GenPasswd(n):
+    			return ''.join([choice(string.letters + string.digits) for i in range(n)])
+		contrasenna=GenPasswd(8)
+		print"esta es tu contrasenna para el usuario ftp:", contrasenna
+#insertamos el usuario en mysql
+		consultauid="select max(uid) from usuarios;"
+		cursor.execute(consultauid)
+		consulta_uid = cursor.fetchone()
+#si la tabla esta vacia introduce el 5001
+		if consulta_uid[0] == None:
+        		conuid=str("5001")
+        		usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuid+","+conuid+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
+        		print usermysql
+        		cursor.execute(usermysql)
+        		base.commit()
+        		print "El proceso se realizo satisfactoriamente"
+#en caso contrario le suma uno al numero maximo de la tabla		
+		else:
+        		conuid=consulta_uid[0]+1
+        		conuidn=str(conuid)
+        		usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuidn+","+conuidn+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
+        		cursor.execute(usermysql)
+        		base.commit()
+        		print "El proceso se realizo satisfactoriamente"
+
+
