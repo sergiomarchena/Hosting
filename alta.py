@@ -83,4 +83,35 @@ else:
 		cursor.execute(usuariomysql)
 		base.commit()
 		print "la base de datos y el usuario mysql han sido creado correctamente"
-
+#creamos la nueva zona
+		fichzona="/home/usuario/plantillas_hosting/zona"
+		zonadom=open(fichzona,"r")
+		wzona = open(fichzona+'.mod', "w")
+		zonabuff = zonadom.read()
+		char1='%dominio%'
+		cambio = zonabuff.replace(char1, dominio)
+		wzona.write(cambio)
+		zonadom.close()
+		wzona.close()
+#abrimos el fichero modificado y modificamos el named.conf.local
+	 	ficheromodificado=open("/home/usuario/plantillas_hosting/zona.mod","r")
+		ficheromodificado1=ficheromodificado.read()
+		g=open("/etc/bind/named.conf.local","a")
+		g.write(ficheromodificado1)
+		g.close()
+		os.system("rm -r /home/usuario/plantillas_hosting/zona.mod")
+#creamos el nuevo fichero de dominio
+		ficherodominio="/home/usuario/plantillas_hosting/db.plantilla"
+		domain=open(ficherodominio, "r")
+		filew = open(ficherodominio+'.mod', "w")
+		buff = domain.read()
+		variable1='%dominio%'
+		variable2='%name%'
+		rbuff = buff.replace(variable1, dominio)
+		filew.write(rbuff)
+		domain.close()
+		filew.close()
+#cambiamos de lugar y nombre
+		os.system("mv /home/usuario/plantillas_hosting/db.plantilla.mod /etc/bind/db.%s"%dominio)
+#reiniciamos bind
+		reiniciar=os.system("service bind9 restart>/dev/null")
