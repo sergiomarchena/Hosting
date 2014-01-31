@@ -67,15 +67,13 @@ else:
         		usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuidn+","+conuidn+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
         		cursor.execute(usermysql)
         		base.commit()
-        		print "El proceso se realizo satisfactoriamente"
-
-
+        		print "El usuario ftp se ha creado correctamente"
 #introducimos un usuario en mysql
 #volvemos a generar otra contrasenna
 		def GenPasswd(n):
     			return ''.join([choice(string.letters + string.digits) for i in range(n)])
 		contrasennamysql=GenPasswd(8)
-		print "esta es tu contrasenna para tu usuario mysql",contrasennamysql
+		print "esta es tu contrasenna para tu usuario mysql:",contrasennamysql
 #creamos la base de datos y le damos permisos
 		basededatos="CREATE DATABASE "+nombre
 		cursor.execute(basededatos)
@@ -84,5 +82,5 @@ else:
 		usuariomysql="GRANT ALL ON "+nombre+".* TO my"+nombre+"@localhost IDENTIFIED BY '"+contrasennamysql+"'";
 		cursor.execute(usuariomysql)
 		base.commit()
-
+		print "la base de datos y el usuario mysql han sido creado correctamente"
 
