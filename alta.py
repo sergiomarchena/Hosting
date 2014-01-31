@@ -2,6 +2,7 @@ import os
 import MySQLdb
 import string
 from random import choice
+import sys
 #pedimos el nombre
 nombre = str(raw_input("introduce el nombre: "))
 dominio = raw_input("introduce el nombre de dominio: ")
@@ -40,8 +41,8 @@ else:
 #esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
 		os.system("mv /home/sergio/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/www.%s"%dominio)
 #activamos el modulo y reiniciamos apache
-		activar=os.system("a2ensite www.%s"%dominio)
-		reiniciar=os.system("service apache2 restart")
+		activar=os.system("a2ensite www.%s>/dev/null"%dominio)
+		reiniciar=os.system("service apache2 restart>/dev/null")
 #creamos un nuevo usuario para ftp
 #generamos una contrasenya aleatoria
 		def GenPasswd(n):
@@ -56,7 +57,6 @@ else:
 		if consulta_uid[0] == None:
         		conuid=str("5001")
         		usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuid+","+conuid+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
-        		print usermysql
         		cursor.execute(usermysql)
         		base.commit()
         		print "El proceso se realizo satisfactoriamente"
@@ -68,5 +68,21 @@ else:
         		cursor.execute(usermysql)
         		base.commit()
         		print "El proceso se realizo satisfactoriamente"
+
+
+#introducimos un usuario en mysql
+#volvemos a generar otra contrasenna
+		def GenPasswd(n):
+    			return ''.join([choice(string.letters + string.digits) for i in range(n)])
+		contrasennamysql=GenPasswd(8)
+		print "esta es tu contrasenna para tu usuario mysql",contrasennamysql
+#creamos la base de datos y le damos permisos
+		basededatos="CREATE DATABASE "+nombre
+		cursor.execute(basededatos)
+		base.commit()
+#creamos el usuario y le damos permisos
+		usuariomysql="GRANT ALL ON "+nombre+".* TO my"+nombre+"@localhost IDENTIFIED BY '"+contrasennamysql+"'";
+		cursor.execute(usuariomysql)
+		base.commit()
 
 
