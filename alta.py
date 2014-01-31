@@ -106,7 +106,6 @@ else:
 		filew = open(ficherodominio+'.mod', "w")
 		buff = domain.read()
 		variable1='%dominio%'
-		variable2='%name%'
 		rbuff = buff.replace(variable1, dominio)
 		filew.write(rbuff)
 		domain.close()
