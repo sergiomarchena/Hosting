@@ -29,7 +29,7 @@ else:
                 os.system("mkdir /srv/www/%s" %nombre)
                 os.system("cp /home/debian/plantillas_hosting/index.html /srv/www/%s"%nombre)
 #crearemos el nuevo virtualhost
-               virtual_host="/home/debian/plantillas_hosting/virtual_host"
+ virtual_host="/home/debian/plantillas_hosting/virtual_host"
                 virtual=open(virtual_host, "r")
                 filew = open(virtual_host+'.mod', "w")
                 buff = virtual.read()
@@ -45,7 +45,7 @@ else:
                 reiniciar=os.system("service apache2 restart>/dev/null")
 #creamos un nuevo usuario para ftp
 #generamos una contrasenya aleatoria
-                def GenPasswd(n):
+               def GenPasswd(n):
                         return ''.join([choice(string.letters + string.digits) for i in range(n)])
                 contrasenna=GenPasswd(8)
                 print"esta es tu contrasenna para el usuario ftp:", contrasenna
@@ -57,15 +57,15 @@ else:
                 if consulta_uid[0] == None:
                         conuid=str("5001")
                         usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuid+","+conuid+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
-cursor.execute(usermysql)
+			cursor.execute(usermysql)
                         base.commit()
                         print "El proceso se realizo satisfactoriamente"
 #en caso contrario le suma uno al numero maximo de la tabla
-		 else:
+                else:
                         conuid=consulta_uid[0]+1
                         conuidn=str(conuid)
-                        usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuidn+","+conuidn+","+"'/srv/www/"+n$
-                        cursor.execute(usermysql)
+                        usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuidn+","+conuidn+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
+			cursor.execute(usermysql)
                         base.commit()
                         print "El usuario ftp se ha creado correctamente"
 #introducimos un usuario en mysql
@@ -75,7 +75,7 @@ cursor.execute(usermysql)
                 contrasennamysql=GenPasswd(8)
                 print "esta es tu contrasenna para tu usuario mysql:",contrasennamysql
 #creamos la base de datos y le damos permisos
-                basededatos="CREATE DATABASE "+nombre
+		basededatos="CREATE DATABASE "+nombre
                 cursor.execute(basededatos)
                 base.commit()
 #creamos el usuario y le damos permisos
