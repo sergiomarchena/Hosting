@@ -10,7 +10,18 @@ if accion == "mysql":
 	usuariomysql=raw_input("introduzca su usuario mysql: ")
 	contrasenaantigua=raw_input("introduzca su contrasenna antigua mysql: ")
 #codificamos la contrasenna igual que en mysql
-	contrasennacodificada= 
+	base2 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="cambiocontrasenna")
+	cursor2=base2.cursor()
+#insertamos en una tabla diferente la contrasenna encriptada
+	usercontra="insert into contrasenna values('"+usuariomysql+"',PASSWORD('"+contrasenaantigua+"'));"
+	cursor2.execute(usercontra)
+        base2.commit()
+#buscamos la contrasenna y mas tarde la comparamos con la de la otra tabla
+	contrasennacodificada="select contrasenna from contrasenna;"
+        cursor2.execute(contrasennacodificada)
+        consultacodificada = cursor2.fetchone()
+	base2.close() 
+	#print consultacodificada[0]
 #buscamos si existe el usuario
 	consultausuario="select user from user where user='"+usuariomysql+"';"
 	cursor.execute(consultausuario)
@@ -20,7 +31,7 @@ if accion == "mysql":
         cursor.execute(consultacontrasenna)
         consulta_contrasenna = cursor.fetchone()
 #si la contrasenna y el usuario coinciden procedemos a cambiarla
-	if consulta_usuario[0]== usuariomysql and consulta_contrasenna[0]=consultacontrasenna:
+	if consulta_usuario[0]== usuariomysql and consulta_contrasenna[0]== consultacodificada[0]:
 		print "usuario y contrasenna correctas"
 	else:
 		print "contrasenna incorrecta"
