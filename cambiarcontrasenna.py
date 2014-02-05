@@ -1,4 +1,5 @@
 import MySQLdb
+import sys
 print "si introduce mysql cambiara la contrasenna de el usuario mysql o puede introducir ftp para cambiar la de el usuario ftp"
 accion=raw_input("escriba su operacion a realizar: ")
 base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="mysql")
@@ -21,7 +22,6 @@ if accion == "mysql":
         cursor2.execute(contrasennacodificada)
         consultacodificada = cursor2.fetchone()
 	base2.close() 
-	#print consultacodificada[0]
 #buscamos si existe el usuario
 	consultausuario="select user from user where user='"+usuariomysql+"';"
 	cursor.execute(consultausuario)
@@ -33,9 +33,14 @@ if accion == "mysql":
 #si la contrasenna y el usuario coinciden procedemos a cambiarla
 	if consulta_usuario[0]== usuariomysql and consulta_contrasenna[0]== consultacodificada[0]:
 		print "usuario y contrasenna correctas"
+		contrasenanueva=raw_input("introduzca su nueva contrasenna: ")
+		cambio="SET PASSWORD FOR "+usuariomysql+"@localhost = PASSWORD('"+contrasenanueva+"');"
+		cursor.execute(cambio)
+		base.commit()
+		print "contrasenna actualizada correctamente"
 	else:
 		print "contrasenna incorrecta"
-	 	
+		sys.exit	 	
 elif accion == "ftp":
 	print "procederemos a cambiar la contrasenna de ftp"
 	usuarioftp=raw_input("introduzca su usuario ftp: ")
