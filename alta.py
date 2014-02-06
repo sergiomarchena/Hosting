@@ -40,6 +40,18 @@ else:
                 filew.close()
 #esto crea un fichero llamado virtual_host.mod le cambiamos el nombre y movemos a apache
                 os.system("mv /home/debian/plantillas_hosting/virtual_host.mod /etc/apache2/sites-available/www.%s"%dominio)
+#copiar virtual_host de mysql
+                mysql_virtual_host="/home/debian/plantillas_hosting/mysql_virtual_host"
+                mysql_virtual=open(mysql_virtual_host, "r")
+                filew = open(mysql_virtual_host+'.mod', "w")
+                buff = mysql_virtual.read()
+                char1='%dominio%'
+                rbuff = buff.replace(char1, dominio)
+                filew.write(rbuff)
+                mysql_virtual.close()
+                filew.close()
+#esto crea un fichero llamado mysql_virtual_host.mod le cambiamos el nombre y movemos a apache
+                os.system("mv /home/debian/plantillas_hosting/mysql_virtual_host.mod /etc/apache2/sites-available/mysql.%s"%dominio)
 #activamos el modulo y reiniciamos apache
                 activar=os.system("a2ensite www.%s>/dev/null"%dominio)
                 reiniciar=os.system("service apache2 restart>/dev/null")
