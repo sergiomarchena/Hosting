@@ -37,7 +37,7 @@ else:
     	cursor.execute(borracolumna)
    	base.commit()
 #borramos el fichero db. donde 
-	os.system("rm -r /etc/bind/%s" %dominio)
+	os.system("rm -r /etc/bind/db.%s" %dominio)
 #borramos la zona
-
+	
 
