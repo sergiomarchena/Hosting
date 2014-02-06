@@ -54,6 +54,7 @@ else:
                 os.system("mv /home/debian/plantillas_hosting/mysql_virtual_host.mod /etc/apache2/sites-available/mysql.%s"%dominio)
 #activamos el modulo y reiniciamos apache
                 activar=os.system("a2ensite www.%s>/dev/null"%dominio)
+		activarmysql=os.system("a2ensite mysql.%s>/dev/null"%dominio)
                 reiniciar=os.system("service apache2 restart>/dev/null")
 #creamos un nuevo usuario para ftp
 #generamos una contrasenya aleatoria
