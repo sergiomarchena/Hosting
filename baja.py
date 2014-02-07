@@ -38,6 +38,8 @@ else:
    	base.commit()
 #borramos el fichero db. donde 
 	os.system("rm -r /etc/bind/db.%s" %dominio)
-#borramos la zona
-	
+#borramos la zona del fichero named.conf.local
+	os.system("sed '/zone " + '"%s"'% dominio + "/,/};/d' /etc/bind/named.conf.local > temporal")
+	os.system("mv temporal /etc/bind/named.conf.local")
+	print "El usuario fue elimindado correctamente"
 
