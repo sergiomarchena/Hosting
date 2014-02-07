@@ -41,7 +41,6 @@ elif accion == "ftp":
                 cursor3.execute(cambio)
                 base3.commit()
                 print "contrasenna actualizada correctamente"
-#borramos el registro creado para que la tabla no aumente
 	else:
                 print "usuario incorrecto"
 else:
