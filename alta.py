@@ -4,8 +4,8 @@ import string
 from random import choice
 import sys
 #pedimos el nombre
-nombre = str(raw_input("introduce el nombre: "))
-dominio = raw_input("introduce el nombre de dominio: ")
+nombre = (sys.argv[1])
+dominio = (sys.argv[2])
 #abrimos una conexion
 base = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="ftpd")
 cursor=base.cursor()
