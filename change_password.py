@@ -41,14 +41,12 @@ if accion == "mysql":
 		base.commit()
 		print "contrasenna actualizada correctamente"
 #borramos el registro creado para que la tabla no aumente
-			base2 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="cambiocontrasenna")
-        		cursor2=base2.cursor()
-			borrarregistro="delete from contrasenna;"
-			cursor2.execute(borrarregistro)
-        		base2.commit()
-			base2.close()
-		else:
-			print "contrasena nueva incorrecta"
+		base2 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="cambiocontrasenna")
+        	cursor2=base2.cursor()
+		borrarregistro="delete from contrasenna;"
+		cursor2.execute(borrarregistro)
+        	base2.commit()
+		base2.close()
 	else:
 		print "contrasenna incorrecta"
 #tambien borraremos la tabla porque si no el usuario se quedaria guardado y en la siguiente consulta apareceria 2 veces
@@ -92,20 +90,17 @@ elif accion == "ftp":
                 print "usuario y contrasenna correctas"
 # contrasenna nueva
                 contrasenanueva=(sys.arg[4])
-                if contrasenanueva == pruebadenuevo:
-                        cambio="update usuarios set password = PASSWORD('"+contrasenanueva+"')where username='"+usuarioftp+"';"
-                        cursor3.execute(cambio)
-                        base3.commit()
-                        print "contrasenna actualizada correctamente"
+                cambio="update usuarios set password = PASSWORD('"+contrasenanueva+"')where username='"+usuarioftp+"';"
+                cursor3.execute(cambio)
+                base3.commit()
+                print "contrasenna actualizada correctamente"
 #borramos el registro creado para que la tabla no aumente
-                        base2 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="cambiocontrasenna")
-                        cursor2=base2.cursor()
-                        borrarregistro="delete from contrasenna;"
-                        cursor2.execute(borrarregistro)
-                        base2.commit()
-                        base2.close()
-                else:
-                        print "contrasena nueva incorrecta"
+                base2 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="cambiocontrasenna")
+                cursor2=base2.cursor()
+                borrarregistro="delete from contrasenna;"
+                cursor2.execute(borrarregistro)
+                base2.commit()
+                base2.close()
         else:
                 print "contrasenna incorrecta"
 #tambien borraremos la tabla porque si no el usuario se quedaria guardado y en la siguiente consulta apareceria 2 veces
