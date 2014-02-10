@@ -1,6 +1,5 @@
 import MySQLdb
 import sys
-import getpass
 import sys
 accion=(sys.argv[1])
 usuario=(sys.argv[2])
