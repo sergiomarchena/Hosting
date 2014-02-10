@@ -24,7 +24,6 @@ if accion == "mysql":
         else:
                 print "usuario incorrecto"
                 sys.exit
-
 elif accion == "ftp":
         base3 = MySQLdb.connect(host="localhost", user="root", passwd="sergio", db="ftpd")
         cursor3=base3.cursor()
@@ -41,8 +40,8 @@ elif accion == "ftp":
                 cursor3.execute(cambio)
                 base3.commit()
                 print "contrasenna actualizada correctamente"
+#si no existe o si se equivoca introduciendo los parametros aparece un error
 	else:
                 print "usuario incorrecto"
 else:
-        print "si introduce mysql como primer parametro cambiara la contrasenna de el usuario mysql ademas como segundo el usuario,tercer parametro l$
-
+        print "si introduce mysql como primer parametro cambiara la contrasenna de el usuario mysql ademas como segundo el usuario,tercer parametro la nueva contrasenna o puede introducir ftp para cambiar la de el usuario ftp y los parametros usuario,nueva"
