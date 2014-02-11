@@ -29,7 +29,7 @@ else:
                 os.system("mkdir /srv/www/%s" %nombre)
                 os.system("cp /home/debian/plantillas_hosting/index.html /srv/www/%s"%nombre)
 #crearemos el nuevo virtualhost
- virtual_host="/home/debian/plantillas_hosting/virtual_host"
+ 		virtual_host="/home/debian/plantillas_hosting/virtual_host"
                 virtual=open(virtual_host, "r")
                 filew = open(virtual_host+'.mod', "w")
                 buff = virtual.read()
@@ -61,7 +61,7 @@ else:
                def GenPasswd(n):
                         return ''.join([choice(string.letters + string.digits) for i in range(n)])
                 contrasenna=GenPasswd(8)
-                print"esta es tu contrasenna para el usuario ftp:", contrasenna
+                print"esta es tu contrasenna para el usuario %s ftp:"%nombre, contrasenna
 #insertamos el usuario en mysql
                 consultauid="select max(uid) from usuarios;"
                 cursor.execute(consultauid)
@@ -72,8 +72,8 @@ else:
                         usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuid+","+conuid+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
 			cursor.execute(usermysql)
                         base.commit()
-                        print "El proceso se realizo satisfactoriamente"
-			os.system("chown /srv/www/%s" +conuid+":"+conuid+" -R %s" %nombre,%nombre)
+#cambiamos el propietario de la carpeta /srv/www
+                        os.system("chown -R "+conuid+":"+conuid+" "+carpeta)
 #en caso contrario le suma uno al numero maximo de la tabla
                 else:
                         conuid=consulta_uid[0]+1
@@ -81,16 +81,14 @@ else:
                         usermysql="insert into usuarios values('"+ nombre+"'," +"PASSWORD('"+contrasenna+"'),"+conuidn+","+conuidn+","+"'/srv/www/"+nombre+"',"+"'/bin/false1',"+"1,'"+dominio+"');"
 			cursor.execute(usermysql)
                         base.commit()
-                        print "El usuario ftp se ha creado correctamente"
-			os.system("chown /srv/www/%s" +conuid+":"+conuid+" -R %s" %nombre,%nombre)
-#cambiamos el permiso a la carpeta de /srv/www para que sea propiedad del usuario
-
+#cambiamos el propietario de la carpeta /srv/www
+			os.system("chown -R "+conuidn+":"+conuidn+" "+carpeta)
 #introducimos un usuario en mysql
 #volvemos a generar otra contrasenna
                 def GenPasswd(n):
                         return ''.join([choice(string.letters + string.digits) for i in range(n)])
                 contrasennamysql=GenPasswd(8)
-                print "esta es tu contrasenna para tu usuario mysql:",contrasennamysql
+                print "esta es tu contrasenna para tu usuario my%s mysql:"%nombre,contrasennamysql
 #creamos la base de datos y le damos permisos
 		basededatos="CREATE DATABASE "+nombre
                 cursor.execute(basededatos)
@@ -99,7 +97,6 @@ else:
                 usuariomysql="GRANT ALL ON "+nombre+".* TO my"+nombre+"@localhost IDENTIFIED BY '"+contrasennamysql+"'";
                 cursor.execute(usuariomysql)
                 base.commit()
-                print "la base de datos y el usuario mysql han sido creado correctamente"
 #creamos la nueva zona
 		fichzona="/home/debian/plantillas_hosting/zona"
                 zonadom=open(fichzona,"r")
@@ -131,4 +128,4 @@ else:
                 os.system("mv /home/debian/plantillas_hosting/db.plantilla.mod /etc/bind/db.%s"%dominio)
 #reiniciamos bind
                 reiniciar=os.system("service bind9 restart>/dev/null")
-
+		print "usuario creado correctamente"
