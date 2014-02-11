@@ -73,6 +73,7 @@ else:
 			cursor.execute(usermysql)
                         base.commit()
                         print "El proceso se realizo satisfactoriamente"
+			os.system("chown /srv/www/%s" +conuid+":"+conuid+" -R %s" %nombre,%nombre)
 #en caso contrario le suma uno al numero maximo de la tabla
                 else:
                         conuid=consulta_uid[0]+1
@@ -81,6 +82,9 @@ else:
 			cursor.execute(usermysql)
                         base.commit()
                         print "El usuario ftp se ha creado correctamente"
+			os.system("chown /srv/www/%s" +conuid+":"+conuid+" -R %s" %nombre,%nombre)
+#cambiamos el permiso a la carpeta de /srv/www para que sea propiedad del usuario
+
 #introducimos un usuario en mysql
 #volvemos a generar otra contrasenna
                 def GenPasswd(n):
