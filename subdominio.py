@@ -58,11 +58,11 @@ else:
         os.system("service apache2 restart >/dev/null")
 #cambiamos los permisos
 #buscamos el uid
-        consultauid="select max(uid) from usuarios where username='%s';"%nombre
+        consultauid="select uid from usuarios where username='%s';"%nombre
         cursor.execute(consultauid)
         consulta_uid = cursor.fetchone()
         uid=str(consulta_uid[0])
-	os.system("chown -R "+uid+":"+uid+" "+"/srv/www/%s/subdominio/%s")% (nombre,subdominio)
+        carpeta="/srv/www/%s/subdominio/"%(nombre)
+        os.system("chown -R "+uid+":"+uid+" "+carpeta)
         print "El subdominio fue creado correctamente"
-
 

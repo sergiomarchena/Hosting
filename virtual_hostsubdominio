@@ -1,6 +1,6 @@
 <VirtualHost *:80>
 	servername %subdominio%.%nombre%.com
-	DocumentRoot /srv/www/%nombre%
+	DocumentRoot /srv/www/%nombre%/subdominio/%subdominio%
 	<Directory /srv/www/%nombre%/subdominio/%subdominio%>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
