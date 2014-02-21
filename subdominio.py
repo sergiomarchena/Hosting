@@ -56,5 +56,13 @@ else:
  	db.write("Alias /subdominio/%s/ \"/usr/share/apache2/error/HTTP_NOT_FOUND.html.var\" "%subdominio)
 	db.close()
         os.system("service apache2 restart >/dev/null")
+#cambiamos los permisos
+#buscamos el uid
+        consultauid="select max(uid) from usuarios where username='%s';"%nombre
+        cursor.execute(consultauid)
+        consulta_uid = cursor.fetchone()
+        uid=str(consulta_uid[0])
+	os.system("chown -R "+uid+":"+uid+" "+"/srv/www/%s/subdominio/%s")% (nombre,subdominio)
         print "El subdominio fue creado correctamente"
+
 
